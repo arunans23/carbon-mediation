@@ -31,30 +31,34 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class BinaryRelayBuilder implements Builder{
+public class BinaryRelayBuilder implements Builder {
 
-	public static byte[] readAllFromInputSteam(InputStream in) throws IOException{
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		byte[] buf = new byte[1024];
-		int read = in.read(buf);
+    public static byte[] readAllFromInputSteam(InputStream in) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buf = new byte[1024];
+        int read = in.read(buf);
 
-		while(read != -1){
-			out.write(buf,0,read);
-			read = in.read(buf);
-		}
-		return out.toByteArray();
-	}
+        while (read != -1) {
+            out.write(buf, 0, read);
+            read = in.read(buf);
+        }
+        return out.toByteArray();
+    }
 
 
-	public OMElement processDocument(InputStream inputStream,
-			String contentType, MessageContext messageContext) throws AxisFault {
-		try {
+    public OMElement processDocument(InputStream inputStream,
+                                     String contentType, MessageContext messageContext) throws AxisFault {
+        try {
             //Fix for https://wso2.org/jira/browse/CARBON-7256
             messageContext.setProperty(Constants.Configuration.CONTENT_TYPE, contentType);
-
-			//We will create a SOAP message, which holds the input message as a blob
-			SOAPFactory factory = OMAbstractFactory.getSOAP12Factory();
-			SOAPEnvelope env = factory.getDefaultEnvelope();
+            //We create a SOAP message, which holds the input message as a blob
+            SOAPFactory factory;
+            if (messageContext.isSOAP11()) {
+                factory = OMAbstractFactory.getSOAP11Factory();
+            } else {
+                factory = OMAbstractFactory.getSOAP12Factory();
+            }
+            SOAPEnvelope env = factory.getDefaultEnvelope();
             if (inputStream != null) {
                 OMNamespace ns = factory.createOMNamespace(
                         RelayConstants.BINARY_CONTENT_QNAME.getNamespaceURI(), "ns");
@@ -70,12 +74,12 @@ public class BinaryRelayBuilder implements Builder{
                 env.getBody().addChild(omEle);
             }
 
-			return env;
-		} catch (SOAPProcessingException e) {
-			throw AxisFault.makeFault(e);
-		} catch (OMException e) {
-			throw AxisFault.makeFault(e);
-		}
-	}
+            return env;
+        } catch (SOAPProcessingException e) {
+            throw AxisFault.makeFault(e);
+        } catch (OMException e) {
+            throw AxisFault.makeFault(e);
+        }
+    }
 
 }
