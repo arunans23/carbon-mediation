@@ -19,9 +19,11 @@ package org.wso2.carbon.mediator.iterate;
 
 import org.apache.axiom.om.OMAttribute;
 import org.apache.axiom.om.OMElement;
-import org.apache.synapse.config.xml.SynapseXPathFactory;
-import org.apache.synapse.config.xml.SynapseXPathSerializer;
+import org.apache.synapse.config.xml.SynapsePath;
+import org.apache.synapse.config.xml.SynapsePathFactory;
+import org.apache.synapse.config.xml.SynapsePathSerializer;
 import org.apache.synapse.config.xml.OMElementUtils;
+import org.apache.synapse.util.xpath.SynapseJsonPath;
 import org.apache.synapse.util.xpath.SynapseXPath;
 import org.jaxen.JaxenException;
 import org.wso2.carbon.mediator.service.MediatorException;
@@ -37,15 +39,18 @@ public class IterateMediator extends AbstractListMediator {
     private static final QName ATT_PREPLD = new QName("preservePayload");
     private static final QName ATT_ATTACHPATH = new QName("attachPath");
     private static final QName ATT_ID = new QName("id"); 
-    private static final QName ATT_SEQUENTIAL = new QName("sequential"); 
+    private static final QName ATT_SEQUENTIAL = new QName("sequential");
+
+    private static final String DEFAULT_JSON_ATTACHPATH = "$";
+    private static final String DEFAULT_XML_ATTACHPATH = ".";
     
     private boolean continueParent = false;
 
     private boolean preservePayload = false;
 
-    private SynapseXPath expression = null;
+    private SynapsePath expression = null;
 
-    private SynapseXPath attachPath = null;
+    private SynapsePath attachPath = null;
     
     private String id;
     
@@ -63,11 +68,11 @@ public class IterateMediator extends AbstractListMediator {
         return preservePayload;
     }
 
-    public SynapseXPath getExpression() {
+    public SynapsePath getExpression() {
         return expression;
     }
 
-    public SynapseXPath getAttachPath() {
+    public SynapsePath getAttachPath() {
         return attachPath;
     }
 
@@ -79,11 +84,11 @@ public class IterateMediator extends AbstractListMediator {
         this.preservePayload = preservePayload;
     }
 
-    public void setExpression(SynapseXPath expression) {
+    public void setExpression(SynapsePath expression) {
         this.expression = expression;
     }
 
-    public void setAttachPath(SynapseXPath attachPath) {
+    public void setAttachPath(SynapsePath attachPath) {
         this.attachPath = attachPath;
     }
 
@@ -120,11 +125,11 @@ public class IterateMediator extends AbstractListMediator {
         }
 
         if (attachPath != null && !".".equals(attachPath.toString())) {
-            SynapseXPathSerializer.serializeXPath(attachPath, itrElem, "attachPath");
+            SynapsePathSerializer.serializePath(attachPath, itrElem, "attachPath");
         }
 
         if (expression != null) {
-            SynapseXPathSerializer.serializeXPath(expression, itrElem, "expression");
+            SynapsePathSerializer.serializePath(expression, itrElem, "expression");
         } else {
             throw new MediatorException("Missing expression of the IterateMediator which is required.");
         }
@@ -177,7 +182,7 @@ public class IterateMediator extends AbstractListMediator {
         OMAttribute expression = elem.getAttribute(ATT_EXPRN);
         if (expression != null) {
             try {
-                this.expression = SynapseXPathFactory.getSynapseXPath(elem, ATT_EXPRN);
+                this.expression = SynapsePathFactory.getSynapsePath(elem, ATT_EXPRN);
             } catch (JaxenException e) {
                 throw new MediatorException("Unable to build the IterateMediator. " + "Invalid XPATH " +
                     expression.getAttributeValue());
@@ -188,25 +193,40 @@ public class IterateMediator extends AbstractListMediator {
         }
 
         OMAttribute attachPath = elem.getAttribute(ATT_ATTACHPATH);
-        String attachPathValue = "";
-        if (attachPath != null && !this.preservePayload) {
-            throw new MediatorException("Wrong configuration for the iterate mediator " +
-                    ":: if the iterator should not preserve payload, " +
-                    "then attachPath can not be present");
-        } else if (attachPath != null) {
-            attachPathValue = attachPath.getAttributeValue();
+
+        if (attachPath != null && !this.isPreservePayload()) {
+            throw new MediatorException("Wrong configuration for the iterate mediator :: if the iterator " +
+                    "should not preserve payload, then attachPath can not be present");
         }
 
-        if (!attachPathValue.equals("")) {
-            try {
-                SynapseXPath xp = new SynapseXPath(attachPathValue);
-                OMElementUtils.addNameSpaces(xp, elem, null);
-                this.attachPath = xp;
-            } catch (JaxenException e) {
-                throw new MediatorException("Unable to build the IterateMediator. Invalid XPATH " +
-                        attachPathValue);
+        try {
+            SynapsePath attachSynapsePath;
+
+            if (attachPath != null) {
+                attachSynapsePath = SynapsePathFactory.getSynapsePath(elem, ATT_ATTACHPATH);
+
+                if (this.expression.getClass() != attachSynapsePath.getClass()) {
+                    throw new MediatorException("Wrong configuraton for the iterate mediator :: both expression and " +
+                            "attachPath should be either jsonpath or xpath");
+                }
+
+            } else {
+
+                if (this.getExpression() instanceof SynapseJsonPath){
+                    attachSynapsePath = new SynapseJsonPath(DEFAULT_JSON_ATTACHPATH);
+                } else {
+                    attachSynapsePath = new SynapseXPath(DEFAULT_XML_ATTACHPATH);
+                }
             }
+
+            OMElementUtils.addNameSpaces(attachSynapsePath, elem, null);
+            this.attachPath = attachSynapsePath;
+
+        } catch (JaxenException e) {
+            throw new MediatorException("Unable to build the IterateMediator. Invalid PATH " +
+                    attachPath.getAttributeValue());
         }
+
         OMElement targetElement = elem.getFirstChildWithName(TARGET_Q);
         if (targetElement != null) {
             addChildren(elem, this);

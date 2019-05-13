@@ -19,9 +19,15 @@
 <%@ page import="org.wso2.carbon.mediator.service.ui.Mediator" %>
 <%@ page import="org.wso2.carbon.sequences.ui.util.SequenceEditorHelper" %>
 <%@ page import="org.wso2.carbon.sequences.ui.util.ns.XPathFactory" %>
+<%@ page import="org.wso2.carbon.sequences.ui.util.ns.SynapseJsonPathFactory" %>
 <%@ page import="org.wso2.carbon.mediator.target.TargetMediator" %>
+<%@ page import="org.apache.synapse.config.xml.SynapseXPathFactory" %>
 
 <%
+    final String JSON_EVAL_START_STRING = "json-eval(";
+    final String ITR_EXPRESSION_KEY = "itr_expression";
+    final String ATTACH_PTH_KEY = "itr_expression";
+
     Mediator mediator = SequenceEditorHelper.getEditingMediator(request, session);
     if (!(mediator instanceof IterateMediator)) {
         // todo : proper error handling
@@ -31,10 +37,21 @@
     String continueParent =  request.getParameter("continueParent");
     String preservePayload = request.getParameter("preservePayload");
     String sequentialMed = request.getParameter("sequentialMed");
-    
-    XPathFactory xPathFactory = XPathFactory.getInstance();
-    iterateMediator.setExpression(xPathFactory.createSynapseXPath("itr_expression", request, session));
-    iterateMediator.setAttachPath(xPathFactory.createSynapseXPath("attach_path", request, session));
+
+    XPathFactory xPathFactory = SynapsePathFactory.getInstance();
+    SynapseJsonPathFactory jsonPathFactory = SynapseJsonPathFactory.getInstance();
+
+    if (request.getParameter(ITR_EXPRESSION_KEY).startsWith(JSON_EVAL_START_STRING)){
+        iterateMediator.setExpression(jsonPathFactory.createSynapseJsonPath(ITR_EXPRESSION_KEY, request));
+    } else {
+        iterateMediator.setExpression(xPathFactory.createSynapseXPath(ITR_EXPRESSION_KEY, request, session));
+    }
+
+    if (request.getParameter(ATTACH_PTH_KEY).startsWith(JSON_EVAL_START_STRING)){
+        iterateMediator.setExpression(jsonPathFactory.createSynapseJsonPath(ITR_EXPRESSION_KEY, request));
+    } else {
+        iterateMediator.setAttachPath(xPathFactory.createSynapseXPath(ATTACH_PTH_KEY, request, session));
+    }
 
     boolean cont_parent = Boolean.parseBoolean(continueParent);
     iterateMediator.setContinueParent(cont_parent);
