@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.mediation.transport.handlers.requestprocessors.swagger;
+package org.wso2.carbon.rest.api;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.description.TransportInDescription;
@@ -29,7 +29,7 @@ import org.apache.synapse.rest.Resource;
 import org.apache.synapse.rest.dispatch.DispatcherHelper;
 import org.apache.synapse.rest.dispatch.URLMappingBasedDispatcher;
 import org.apache.synapse.rest.version.URLBasedVersionStrategy;
-import org.wso2.carbon.mediation.transport.handlers.internal.ContextServiceComponent;
+import org.wso2.carbon.rest.api.internal.ContextServiceComponent;
 import org.wso2.carbon.utils.NetworkUtils;
 
 import java.net.SocketException;

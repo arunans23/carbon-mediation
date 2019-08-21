@@ -25,10 +25,10 @@ import org.apache.synapse.rest.API;
 import org.wso2.carbon.core.transports.CarbonHttpRequest;
 import org.wso2.carbon.core.transports.CarbonHttpResponse;
 import org.wso2.carbon.core.transports.HttpGetRequestProcessor;
-import org.wso2.carbon.mediation.transport.handlers.requestprocessors.swagger.GenericApiObjectDefinition;
-import org.wso2.carbon.mediation.transport.handlers.requestprocessors.swagger.SwaggerConstants;
-import org.wso2.carbon.mediation.transport.handlers.utils.GSONUtils;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
+import org.wso2.carbon.rest.api.GenericApiObjectDefinition;
+import org.wso2.carbon.rest.api.SwaggerConstants;
+import org.wso2.carbon.rest.api.utils.GSONUtils;
 import org.yaml.snakeyaml.Yaml;
 
 /**

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.mediation.transport.handlers.requestprocessors.swagger;
+package org.wso2.carbon.rest.api;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;

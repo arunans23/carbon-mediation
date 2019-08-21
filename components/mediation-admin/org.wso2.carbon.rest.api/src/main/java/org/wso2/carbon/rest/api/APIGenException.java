@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.mediation.transport.handlers.requestprocessors.swagger;
+package org.wso2.carbon.rest.api;
 
 /**
  * Custom exception for API generation

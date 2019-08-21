@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package org.wso2.carbon.mediation.transport.handlers.utils;
+package org.wso2.carbon.rest.api.utils;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
