@@ -86,5 +86,9 @@
             <groupId>org.wso2.orbit.org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.mediation</groupId>
+            <artifactId>org.wso2.carbon.mediation.registry</artifactId>
+        </dependency>
     </dependencies>
 </project>
