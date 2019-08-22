@@ -73,7 +73,8 @@ public class APIGenerator {
 
         if (swaggerJson.get(SwaggerConstants.BASE_PATH) == null ||
                 swaggerJson.get(SwaggerConstants.BASE_PATH).getAsString().isEmpty()) {
-            throw new APIGenException("The \"basePath\" of the swagger definition is mandatory for API generation");
+            throw new APIGenException("The \"basePath\" of the swagger definition "
+                                      + "is mandatory for API generation");
         }
         String apiContext = swaggerJson.get(SwaggerConstants.BASE_PATH).getAsString();
         //cleanup context : remove ending '/'
@@ -82,12 +83,14 @@ public class APIGenerator {
         }
 
         if (swaggerJson.get(SwaggerConstants.INFO) == null) {
-            throw new APIGenException("The \"info\" section of the swagger definition is mandatory for API generation");
+            throw new APIGenException("The \"info\" section of the swagger definition "
+                                      + "is mandatory for API generation");
         }
         JsonObject swaggerInfo = swaggerJson.getAsJsonObject(SwaggerConstants.INFO);
         if (swaggerInfo.get(SwaggerConstants.TITLE) == null ||
                 swaggerInfo.get(SwaggerConstants.TITLE).getAsString().isEmpty()) {
-            throw new APIGenException("The title of the swagger definition is mandatory for API generation");
+            throw new APIGenException("The title of the swagger definition "
+                                      + "is mandatory for API generation");
         }
 
         String apiName = swaggerInfo.get(SwaggerConstants.TITLE).getAsString();
@@ -155,7 +158,8 @@ public class APIGenerator {
         // clone existing API
         API clonedAPI;
         try {
-            clonedAPI = APIFactory.createAPI(AXIOMUtil.stringToOM(APISerializer.serializeAPI(existingAPI).toString()));
+            clonedAPI = APIFactory.createAPI(AXIOMUtil.stringToOM(
+                    APISerializer.serializeAPI(existingAPI).toString()));
         } catch (XMLStreamException e) {
             throw new APIGenException("Error occurred while cloning the existing API", e);
         }
@@ -285,12 +289,13 @@ public class APIGenerator {
             for (String param : pathParams) {
                 try {
                     PropertyMediator propertyMediator = new PropertyMediator();
-                    propertyMediator.setExpression(new SynapseXPath("get-property('uri.var." + param + "')"));
+                    propertyMediator.setExpression(new SynapseXPath(
+                            "get-property('uri.var." + param + "')"));
                     propertyMediator.setName(param);
                     defaultInSeq.addChild(propertyMediator);
                 } catch (JaxenException e) {
-                    throw new APIGenException("Error occurred while creating property mediator for extracting path " +
-                            "params", e);
+                    throw new APIGenException("Error occurred while creating "
+                                              + "property mediator for extracting path params", e);
                 }
             }
         }

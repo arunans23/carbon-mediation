@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2016, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -115,7 +115,8 @@ public class GenericApiObjectDefinition {
             if (transportIn != null) {
                 // Give priority to WSDLEPRPrefix
                 if (transportIn.getParameter(SwaggerConstants.WSDL_EPR_PREFIX) != null) {
-                    String wsdlPrefixParam = (String) transportIn.getParameter(SwaggerConstants.WSDL_EPR_PREFIX).getValue();
+                    String wsdlPrefixParam = (String) transportIn.getParameter(
+                            SwaggerConstants.WSDL_EPR_PREFIX).getValue();
                     if (!wsdlPrefixParam.isEmpty()) {
                         //WSDLEPRPrefix available
                         try {
@@ -137,7 +138,8 @@ public class GenericApiObjectDefinition {
                             log.error("WSDLEPRPrefix is not a valid URI", e);
                         }
                     } else {
-                        log.error("\"WSDLEPRPrefix\" is empty. Please provide relevant URI or comment out parameter");
+                        log.error("\"WSDLEPRPrefix\" is empty. Please provide relevant"
+                                  + " URI or comment out parameter");
                     }
                 }
 
@@ -330,7 +332,8 @@ public class GenericApiObjectDefinition {
         if (method.equalsIgnoreCase(SwaggerConstants.OPERATION_HTTP_POST) ||
             method.equalsIgnoreCase(SwaggerConstants.OPERATION_HTTP_PUT) ||
             method.equalsIgnoreCase(SwaggerConstants.OPERATION_HTTP_PATCH)) {
-            parameterList.add(getParametersMap("payload", SwaggerConstants.PARAMETER_IN_BODY, "Sample Payload", false));
+            parameterList.add(getParametersMap("payload", SwaggerConstants.PARAMETER_IN_BODY,
+                                               "Sample Payload", false));
         }
     }
 
