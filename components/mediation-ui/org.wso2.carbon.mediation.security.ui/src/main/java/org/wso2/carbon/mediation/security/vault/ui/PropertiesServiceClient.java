@@ -247,24 +247,24 @@ public class PropertiesServiceClient {
 		}
 	}
 
-    /**
-     * Validate user input against the defined regular expression. If the System property,
-     * "org.wso2.SecureVaultPasswordRegEx" is not defined, default regex will be used for the validation.
-     *
-     * @param name  Vault key
-     * @param value Password value
-     * @throws Exception
-     */
-    private void validateInput(String name, String value) throws Exception {
+        /**
+         * Validate user input against the defined regular expression. If the System property,
+         * "org.wso2.SecureVaultPasswordRegEx" is not defined, default regex will be used for the validation.
+         *
+         * @param name  Vault key
+         * @param value Password value
+         * @throws Exception
+         */
+        private void validateInput(String name, String value) throws Exception {
 
-        String regEx = System.getProperty("org.wso2.SecureVaultPasswordRegEx");
-        if (regEx == null || regEx.isEmpty()) {
-            regEx = "^[\\S]{5,30}$";
+            String regEx = System.getProperty("org.wso2.SecureVaultPasswordRegEx");
+            if (regEx == null || regEx.isEmpty()) {
+                regEx = "^[\\S]{5,30}$";
+            }
+            if (!value.matches(regEx)) {
+                String message = "Password value for " + name + " does not match with the configured regular expression.";
+                log.error(message);
+                throw new Exception(message);
+            }
         }
-        if (!value.matches(regEx)) {
-            String message = "Password value for " + name + " does not match with the configured regular expression.";
-            log.error(message);
-            throw new Exception(message);
-        }
-    }
 }
