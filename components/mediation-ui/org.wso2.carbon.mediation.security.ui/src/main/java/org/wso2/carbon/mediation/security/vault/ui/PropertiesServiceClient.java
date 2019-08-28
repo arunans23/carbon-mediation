@@ -172,6 +172,7 @@ public class PropertiesServiceClient {
 		String path = SecureVaultConstants.SYSTEM_CONFIG_CONNECTOR_SECURE_VAULT_CONFIG;
 		String name = (String) Utils.getParameter(request, "name");
 		String value = (String) Utils.getParameter(request, "value");
+		validateInput(name, value);
 		// do the encryption..
 		String encrypted = cipherTool.doEncryption(value);
 		try {
@@ -188,6 +189,7 @@ public class PropertiesServiceClient {
 		String name = (String) Utils.getParameter(request, "name");
 		String value = (String) Utils.getParameter(request, "value");
 		String oldName = (String) Utils.getParameter(request, "oldName");
+		validateInput(name, value);
 		// do the encryption..
 		String encrypted = cipherTool.doEncryption(value);
 		try {
@@ -245,4 +247,24 @@ public class PropertiesServiceClient {
 		}
 	}
 
+        /**
+         * Validate user input against the defined regular expression. If the System property,
+         * "org.wso2.SecureVaultPasswordRegEx" is not defined, default regex will be used for the validation.
+         *
+         * @param name  Vault key
+         * @param value Password value
+         * @throws Exception
+         */
+        private void validateInput(String name, String value) throws Exception {
+
+            String regEx = System.getProperty("org.wso2.SecureVaultPasswordRegEx");
+            if (regEx == null || regEx.isEmpty()) {
+                regEx = "^[\\S]{5,30}$";
+            }
+            if (!value.matches(regEx)) {
+                String message = "Password value for " + name + " does not match with the configured regular expression.";
+                log.error(message);
+                throw new Exception(message);
+            }
+        }
 }
