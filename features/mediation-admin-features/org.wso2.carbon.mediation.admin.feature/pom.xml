@@ -18,9 +18,9 @@
    <parent>
       <groupId>org.wso2.carbon.mediation</groupId>
       <artifactId>mediation-admin-features</artifactId>
-      <version>4.6.147-SNAPSHOT</version>
+      <version>4.7.25-SNAPSHOT</version>
    </parent>
-   <version>4.6.147-SNAPSHOT</version>
+   <version>4.7.25-SNAPSHOT</version>
    <modelVersion>4.0.0</modelVersion>
    <artifactId>org.wso2.carbon.mediation.admin.feature</artifactId>
    <packaging>pom</packaging>
@@ -98,6 +98,10 @@
       </dependency>
       <dependency>
          <groupId>org.wso2.carbon.mediation</groupId>
+         <artifactId>org.wso2.carbon.mediation.commons</artifactId>
+      </dependency>
+      <dependency>
+         <groupId>org.wso2.carbon.mediation</groupId>
          <artifactId>org.wso2.carbon.sequences</artifactId>
       </dependency>
       <dependency>
@@ -169,6 +173,7 @@
                          <bundleDef>org.wso2.carbon.mediation:org.wso2.carbon.proxyadmin.common</bundleDef>
                          <bundleDef>org.wso2.carbon.mediation:org.wso2.carbon.proxyadmin</bundleDef>
                          <bundleDef>org.wso2.carbon.mediation:org.wso2.carbon.rest.api</bundleDef>
+                         <bundleDef>org.wso2.carbon.mediation:org.wso2.carbon.mediation.commons</bundleDef>
                          <bundleDef>org.wso2.carbon.mediation:org.wso2.carbon.sequences.common</bundleDef>
                          <bundleDef>org.wso2.carbon.mediation:org.wso2.carbon.sequences</bundleDef>
                          <bundleDef>org.wso2.carbon.mediation:org.wso2.carbon.task</bundleDef>
@@ -180,7 +185,7 @@
                      </bundles>
                       <importFeatures>
                           <!--<importFeatureDef>org.wso2.carbon.core.server:${carbon.kernel.version}</importFeatureDef>-->
-                          <importFeatureDef>org.apache.synapse.wso2:${carbon.mediation.version}</importFeatureDef>
+                          <importFeatureDef>org.apache.synapse.wso2:${synapse.version}</importFeatureDef>
                         <!--<importFeatureDef>org.wso2.carbon.mediation.initializer.server:${carbon.mediation.version}</importFeatureDef>-->
                      </importFeatures>
                   </configuration>

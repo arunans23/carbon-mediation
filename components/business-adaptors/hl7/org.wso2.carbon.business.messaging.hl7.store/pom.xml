@@ -14,17 +14,16 @@
  ~ See the License for the specific language governing permissions and
  ~ limitations under the License.
 -->
-        
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <parent>
         <groupId>org.wso2.carbon.mediation</groupId>
         <artifactId>hl7</artifactId>
-        <version>4.6.147-SNAPSHOT</version>
+        <version>4.7.25-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <version>4.6.147-SNAPSHOT</version>
+    <version>4.7.25-SNAPSHOT</version>
     <artifactId>org.wso2.carbon.business.messaging.hl7.store</artifactId>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - HL7 Business Messaging - Store</name>
@@ -37,9 +36,9 @@
                 <artifactId>openjpa-maven-plugin</artifactId>
                 <version>${openjpa.version}</version>
                 <configuration>
-                <persistenceXmlFile>${basedir}/src/main/resources/META-INF/persistence.xml</persistenceXmlFile>
-                <classes>${project.build.outputDirectory}</classes>
-                <includes>${project.build.outputDirectory}/*/.class</includes>
+                    <persistenceXmlFile>${basedir}/src/main/resources/META-INF/persistence.xml</persistenceXmlFile>
+                    <classes>${project.build.outputDirectory}</classes>
+                    <includes>${project.build.outputDirectory}/*/.class</includes>
                 </configuration>
                 <executions>
                     <execution>
@@ -52,7 +51,7 @@
                 </executions>
                 <dependencies>
                     <dependency>
-                        <groupId>org.apache.openjpa.wso2</groupId>
+                        <groupId>org.wso2.orbit.org.apache.openjpa</groupId>
                         <artifactId>openjpa-all</artifactId>
                         <version>${openjpa.version.wso2}</version>
                     </dependency>
@@ -61,28 +60,25 @@
 
             <plugin>
                 <groupId>org.apache.felix</groupId>
-                <artifactId>maven-scr-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-                        <Bundle-Name>${project.artifactId}</Bundle-Name>                        
+                        <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <DynamicImport-Package>*</DynamicImport-Package>
                         <Export-Package>
                             org.wso2.carbon.business.messaging.hl7.store.*,
                             org.wso2.carbon.business.messaging.hl7.store.entity.*,
+                            org.apache.openjpa.enhance.*,
                         </Export-Package>
-                        <Import-Package>                                     
+                        <Import-Package>
+                            !org.apache.openjpa.enhance.*,
                             org.apache.axis2.*; version="${axis2.osgi.version.range}",
                             org.apache.axiom.*; version="${axiom.osgi.version.range}",
                             org.wso2.carbon.utils.*,
                             *;resolution:=optional
-                        </Import-Package>  
+                        </Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
@@ -103,8 +99,8 @@
             <artifactId>org.wso2.carbon.service.mgt</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.logging</artifactId>
+            <groupId>org.ops4j.pax.logging</groupId>
+            <artifactId>pax-logging-api</artifactId>
         </dependency>
 
         <dependency>
@@ -135,12 +131,13 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.openjpa.wso2</groupId>
+            <groupId>org.wso2.orbit.org.apache.openjpa</groupId>
             <artifactId>openjpa-all</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
-
-
-
 </project>
-

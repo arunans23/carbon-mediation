@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 # Copyright (c) 2008, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
@@ -18,13 +19,13 @@
     <parent>
         <groupId>org.wso2.carbon.mediation</groupId>
         <artifactId>event-sink</artifactId>
-        <version>4.6.147-SNAPSHOT</version>
+        <version>4.7.25-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.carbon.event.sink</artifactId>
     <packaging>bundle</packaging>
-    <version>4.6.147-SNAPSHOT</version>
+    <version>4.7.25-SNAPSHOT</version>
     <name>WSO2 Carbon - Event Sink manager</name>
 
     <dependencies>
@@ -56,6 +57,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -63,12 +69,7 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
-                <artifactId>maven-scr-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
-                <version>1.4.0</version>
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
@@ -78,8 +79,9 @@
                             org.wso2.carbon.event.sink.internal
                         </Private-Package>
                         <Import-Package>
-                            org.apache.commons.logging.*;version="${org.apache.commons.logging.version}",
-                            org.osgi.framework,
+                            org.apache.commons.logging.*; version="${import.package.version.commons.logging}",
+                            org.osgi.framework;version="${osgi.framework.imp.pkg.version}",
+                            org.osgi.service.component.*;version="${imp.package.version.osgi.services}",
                             *;resolution:=optional,
                         </Import-Package>
                         <Export-Package>

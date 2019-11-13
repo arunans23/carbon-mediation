@@ -19,11 +19,11 @@
     <parent>
         <groupId>org.wso2.carbon.mediation</groupId>
         <artifactId>kerberos-mediator</artifactId>
-        <version>4.6.147-SNAPSHOT</version>
+        <version>4.7.25-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <version>4.6.147-SNAPSHOT</version>
+    <version>4.7.25-SNAPSHOT</version>
     <artifactId>org.wso2.carbon.mediator.kerberos</artifactId>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - Identity Kerberos Mediator</name>
@@ -52,8 +52,8 @@
             <artifactId>org.wso2.carbon.mediator.service</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.logging</artifactId>
+            <groupId>org.ops4j.pax.logging</groupId>
+            <artifactId>pax-logging-api</artifactId>
         </dependency>
     </dependencies>
 
@@ -73,7 +73,7 @@
                         </Export-Package>
                         <Import-Package>
                             !javax.xml.namespace,
-                            org.apache.commons.logging.*; version="${org.apache.commons.logging.version}",
+                            org.apache.commons.logging.*; version="${import.package.version.commons.logging}",
                             *; resolution:=optional
                         </Import-Package>
                         <Fragment-Host>synapse-core</Fragment-Host>

@@ -22,7 +22,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.synapse.MessageContext;
 import org.apache.synapse.core.axis2.Axis2MessageContext;
-import org.apache.synapse.core.axis2.Axis2Sender;
 import org.apache.synapse.rest.RESTConstants;
 import org.apache.synapse.rest.RESTUtils;
 import org.apache.synapse.rest.dispatch.DispatcherHelper;
@@ -59,6 +58,16 @@ public class InternalAPIDispatcher {
             return false;
         }
 
+        List<InternalAPIHandler> handlerList = internalApi.getHandlers();
+        // check null for apis' where handlers are not set
+        if (handlerList != null) {
+            for (InternalAPIHandler handler : handlerList) {
+                Boolean success = handler.invoke(synCtx);
+                if (!success) {
+                    return false;
+                }
+            }
+        }
         APIResource resource = findResource(synCtx, internalApi);
         if (resource == null) {
             log.warn("No matching Resource found in " + internalApi.getName() +
@@ -104,6 +113,7 @@ public class InternalAPIDispatcher {
                     synCtx.setProperty(RESTConstants.REST_URI_VARIABLE_PREFIX + entry.getKey(),
                             entry.getValue());
                 }
+                RESTUtils.populateQueryParamsToMessageContext(synCtx);
                 return resource;
             }
         }

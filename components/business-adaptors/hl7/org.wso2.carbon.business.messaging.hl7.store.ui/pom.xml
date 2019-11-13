@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.wso2.carbon.mediation</groupId>
         <artifactId>hl7</artifactId>
-        <version>4.6.147-SNAPSHOT</version>
+        <version>4.7.25-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -32,14 +32,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
 
@@ -50,6 +42,7 @@
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
                         <Carbon-Component>UIBundle</Carbon-Component>
                         <Export-Package>
+                            !org.wso2.carbon.business.messaging.hl7.store.internal.*,
                             org.wso2.carbon.business.messaging.hl7.store.ui.*,
                             org.wso2.carbon.business.messaging.hl7.store.*,
                             org.wso2.carbon.business.messaging.hl7.store.admin.*
@@ -92,7 +85,7 @@
             <artifactId>hapi</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.apache.openjpa.wso2</groupId>
+            <groupId>org.wso2.orbit.org.apache.openjpa</groupId>
             <artifactId>openjpa-all</artifactId>
         </dependency>
         <dependency>

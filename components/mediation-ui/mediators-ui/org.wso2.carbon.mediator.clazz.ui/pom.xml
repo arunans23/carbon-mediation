@@ -19,11 +19,11 @@
     <parent>
         <groupId>org.wso2.carbon.mediation</groupId>
         <artifactId>mediators-ui</artifactId>
-        <version>4.6.147-SNAPSHOT</version>
+        <version>4.7.25-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <version>4.6.147-SNAPSHOT</version>
+    <version>4.7.25-SNAPSHOT</version>
     <artifactId>org.wso2.carbon.mediator.clazz.ui</artifactId>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - Class Mediator UI</name>
@@ -59,7 +59,6 @@
                             org.apache.commons.logging,
                             org.osgi.framework,
                             org.wso2.carbon.mediator.service.*,
-                            org.apache.axiom.om; version="${axiom.osgi.version.range}",   
                             *;resolution:=optional
                         </Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
@@ -77,8 +76,8 @@
             <artifactId>org.wso2.carbon.mediator.service</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.logging</artifactId>
+            <groupId>org.ops4j.pax.logging</groupId>
+            <artifactId>pax-logging-api</artifactId>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.mediation</groupId>

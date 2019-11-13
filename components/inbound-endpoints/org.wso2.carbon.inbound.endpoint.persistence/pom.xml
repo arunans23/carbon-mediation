@@ -20,7 +20,7 @@
     <parent>
         <artifactId>inbound-endpoints</artifactId>
         <groupId>org.wso2.carbon.mediation</groupId>
-        <version>4.6.147-SNAPSHOT</version>
+        <version>4.7.25-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.carbon.inbound.endpoint.persistence</artifactId>
@@ -31,13 +31,14 @@
             <artifactId>synapse-nhttp-transport</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-scr-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -52,7 +53,8 @@
                         </Export-Package>
                         <Import-Package>
                         </Import-Package>
-                        <DynamicImport-Package>*</DynamicImport-Package> <!-- TODO: remove this after adding all imports-->
+                        <DynamicImport-Package>*
+                        </DynamicImport-Package> <!-- TODO: remove this after adding all imports-->
                     </instructions>
                 </configuration>
             </plugin>

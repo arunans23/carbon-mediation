@@ -17,12 +17,12 @@
 	<parent>
     	<artifactId>kerberos-mediator-feature</artifactId>
     	<groupId>org.wso2.carbon.mediation</groupId>
-   	<version>4.6.147-SNAPSHOT</version>
+   	<version>4.7.25-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>org.wso2.carbon.mediator.kerberos.feature</artifactId>
-   	<version>4.6.147-SNAPSHOT</version>
+   	<version>4.7.25-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>WSO2 Carbon - Kerberos Mediation Feature</name>
 	<url>http://wso2.org</url>
@@ -60,8 +60,8 @@
 								<bundleDef>org.wso2.carbon.mediation:org.wso2.carbon.mediator.kerberos</bundleDef>
 							</bundles>
 							<importFeatures>
-								<importFeatureDef>org.wso2.carbon.core.server:${carbon.kernel.version}</importFeatureDef>
-								<importFeatureDef>org.apache.synapse.wso2:${carbon.mediation.version}</importFeatureDef>
+								<importFeatureDef>org.wso2.carbon.core.server:${carbon.kernel.feature.version}</importFeatureDef>
+								<importFeatureDef>org.apache.synapse.wso2:${synapse.version}</importFeatureDef>
 							</importFeatures>
 						</configuration>
 					</execution>

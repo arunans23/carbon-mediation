@@ -163,9 +163,8 @@ public class RFCMetaDataParser {
             function.getImportParameterList().setValue(fieldName, fieldValue);
         }
     }
-
-    public static void processFieldValue(String fieldName, String fieldValue, JCoFunction function) {
-        if (fieldValue != null ) {
+    public static void processFieldValue(String fieldName, String fieldValue, JCoFunction function) throws AxisFault {
+        if (fieldValue != null) {
             function.getImportParameterList().setValue(fieldName, fieldValue);
         } else {
             log.warn(fieldName + "is set with an empty value");

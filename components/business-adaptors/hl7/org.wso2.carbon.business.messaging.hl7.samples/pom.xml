@@ -19,11 +19,11 @@
     <parent>
         <groupId>org.wso2.carbon.mediation</groupId>
         <artifactId>hl7</artifactId>
-        <version>4.6.147-SNAPSHOT</version>
+        <version>4.7.25-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <version>4.6.147-SNAPSHOT</version>
+    <version>4.7.25-SNAPSHOT</version>
     <artifactId>org.wso2.carbon.business.messaging.hl7.samples</artifactId>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - HL7 Business Messaging - Samples</name>
@@ -101,6 +101,10 @@
                 <exclusion>
                     <groupId>org.apache.woden</groupId>
                     <artifactId>woden-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>log4j-over-slf4j</artifactId>
                 </exclusion>
             </exclusions>
             <type>mar</type>

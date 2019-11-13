@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
  ~ Copyright (c) 2009-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  ~
@@ -18,20 +18,16 @@
     <parent>
         <groupId>org.wso2.carbon.mediation</groupId>
         <artifactId>websocket</artifactId>
-        <version>4.6.147-SNAPSHOT</version>
+        <version>4.7.25-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>org.wso2.carbon.websocket.transport</artifactId>
-    <version>4.6.147-SNAPSHOT</version>
+    <version>4.7.25-SNAPSHOT</version>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - Websocket Carbon Transport</name>
     <url>http://wso2.org</url>
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.felix</groupId>
-                <artifactId>maven-scr-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
@@ -44,7 +40,7 @@
                         <Export-Package>
                             org.wso2.carbon.websocket.transport.*,
                         </Export-Package>
-                        <Import-Package>                                     
+                        <Import-Package>
                             org.apache.axis2.*; version="${axis2.osgi.version.range}",
                             org.apache.axiom.*; version="${axiom.osgi.version.range}",
                             org.wso2.carbon.core.*,
@@ -75,8 +71,8 @@
             <artifactId>netty-codec-http</artifactId>
         </dependency>
         <dependency>
-             <groupId>io.netty</groupId>
-             <artifactId>netty-codec</artifactId>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-codec</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.axis2</groupId>
@@ -93,6 +89,11 @@
         <dependency>
             <groupId>org.apache.ws.commons.schema</groupId>
             <artifactId>XmlSchema</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>org.apache.felix.scr.ds-annotations</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
