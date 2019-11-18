@@ -22,11 +22,12 @@
 <%@ page import="org.wso2.carbon.sequences.ui.util.ns.SynapseJsonPathFactory" %>
 <%@ page import="org.wso2.carbon.mediator.target.TargetMediator" %>
 <%@ page import="org.apache.synapse.config.xml.SynapseXPathFactory" %>
+<%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <%
     final String JSON_EVAL_START_STRING = "json-eval(";
     final String ITR_EXPRESSION_KEY = "itr_expression";
-    final String ATTACH_PTH_KEY = "itr_expression";
+    final String ATTACH_PTH_KEY = "attach_path";
 
     Mediator mediator = SequenceEditorHelper.getEditingMediator(request, session);
     if (!(mediator instanceof IterateMediator)) {
@@ -38,19 +39,31 @@
     String preservePayload = request.getParameter("preservePayload");
     String sequentialMed = request.getParameter("sequentialMed");
 
-    XPathFactory xPathFactory = SynapsePathFactory.getInstance();
+    XPathFactory xPathFactory = XPathFactory.getInstance();
     SynapseJsonPathFactory jsonPathFactory = SynapseJsonPathFactory.getInstance();
 
-    if (request.getParameter(ITR_EXPRESSION_KEY).startsWith(JSON_EVAL_START_STRING)){
-        iterateMediator.setExpression(jsonPathFactory.createSynapseJsonPath(ITR_EXPRESSION_KEY, request));
+    String iterateExpression = request.getParameter(ITR_EXPRESSION_KEY);
+    if (iterateExpression.startsWith(JSON_EVAL_START_STRING)) {
+        iterateMediator.setExpression(
+                jsonPathFactory.createSynapseJsonPath(ITR_EXPRESSION_KEY,
+                        iterateExpression.trim().substring(
+                                JSON_EVAL_START_STRING.length(), iterateExpression.length() - 1)));
     } else {
-        iterateMediator.setExpression(xPathFactory.createSynapseXPath(ITR_EXPRESSION_KEY, request, session));
+        iterateMediator.setExpression(xPathFactory.createSynapseXPath(ITR_EXPRESSION_KEY, iterateExpression, session));
     }
 
-    if (request.getParameter(ATTACH_PTH_KEY).startsWith(JSON_EVAL_START_STRING)){
-        iterateMediator.setExpression(jsonPathFactory.createSynapseJsonPath(ITR_EXPRESSION_KEY, request));
+    String attachPathExpression = request.getParameter(ATTACH_PTH_KEY);
+    if (attachPathExpression == null || StringUtils.isEmpty(attachPathExpression)) {
+        iterateMediator.setAttachPathPresent(false);
     } else {
-        iterateMediator.setAttachPath(xPathFactory.createSynapseXPath(ATTACH_PTH_KEY, request, session));
+        iterateMediator.setAttachPathPresent(true);
+        if (attachPathExpression.startsWith(JSON_EVAL_START_STRING)) {
+            iterateMediator.setAttachPath(
+                    jsonPathFactory.createSynapseJsonPath(ATTACH_PTH_KEY, attachPathExpression.trim().substring(
+                            JSON_EVAL_START_STRING.length(), attachPathExpression.length() - 1)));
+        } else {
+            iterateMediator.setAttachPath(xPathFactory.createSynapseXPath(ATTACH_PTH_KEY, request, session));
+        }
     }
 
     boolean cont_parent = Boolean.parseBoolean(continueParent);

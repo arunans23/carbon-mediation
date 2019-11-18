@@ -55,6 +55,8 @@ public class IterateMediator extends AbstractListMediator {
     private String id;
     
     private boolean sequential = false;
+
+    private boolean isAttachPathPresent = false;
     
     public IterateMediator() {
         //addChild(new TargetMediator());
@@ -92,10 +94,17 @@ public class IterateMediator extends AbstractListMediator {
         this.attachPath = attachPath;
     }
 
+    public boolean isAttachPathPresent() {
+        return isAttachPathPresent;
+    }
+
+    public void setAttachPathPresent(boolean attachPathPresent) {
+        isAttachPathPresent = attachPathPresent;
+    }
+
     public String getId() {
     		return id;
     }
-    
     public void setId(String id) {
     		this.id = id;
     }
@@ -124,7 +133,7 @@ public class IterateMediator extends AbstractListMediator {
             itrElem.addAttribute("preservePayload", Boolean.toString(true), nullNS);
         }
 
-        if (attachPath != null && !".".equals(attachPath.toString())) {
+        if (isAttachPathPresent) {
             SynapsePathSerializer.serializePath(attachPath, itrElem, "attachPath");
         }
 
@@ -193,40 +202,27 @@ public class IterateMediator extends AbstractListMediator {
         }
 
         OMAttribute attachPath = elem.getAttribute(ATT_ATTACHPATH);
-
         if (attachPath != null && !this.isPreservePayload()) {
             throw new MediatorException("Wrong configuration for the iterate mediator :: if the iterator " +
                     "should not preserve payload, then attachPath can not be present");
         }
-
         try {
-            SynapsePath attachSynapsePath;
-
             if (attachPath != null) {
-                attachSynapsePath = SynapsePathFactory.getSynapsePath(elem, ATT_ATTACHPATH);
-
+                SynapsePath attachSynapsePath = SynapsePathFactory.getSynapsePath(elem, ATT_ATTACHPATH);
+                this.isAttachPathPresent = true;
                 if (this.expression.getClass() != attachSynapsePath.getClass()) {
                     throw new MediatorException("Wrong configuraton for the iterate mediator :: both expression and " +
                             "attachPath should be either jsonpath or xpath");
                 }
-
+                OMElementUtils.addNameSpaces(attachSynapsePath, elem, null);
+                this.attachPath = attachSynapsePath;
             } else {
-
-                if (this.getExpression() instanceof SynapseJsonPath){
-                    attachSynapsePath = new SynapseJsonPath(DEFAULT_JSON_ATTACHPATH);
-                } else {
-                    attachSynapsePath = new SynapseXPath(DEFAULT_XML_ATTACHPATH);
-                }
+                this.isAttachPathPresent = false;
             }
-
-            OMElementUtils.addNameSpaces(attachSynapsePath, elem, null);
-            this.attachPath = attachSynapsePath;
-
         } catch (JaxenException e) {
             throw new MediatorException("Unable to build the IterateMediator. Invalid PATH " +
                     attachPath.getAttributeValue());
         }
-
         OMElement targetElement = elem.getFirstChildWithName(TARGET_Q);
         if (targetElement != null) {
             addChildren(elem, this);
