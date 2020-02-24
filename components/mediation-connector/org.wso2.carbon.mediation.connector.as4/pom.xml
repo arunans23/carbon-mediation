@@ -30,7 +30,6 @@
         <test.framework.version>4.2.0</test.framework.version>
         <esb.version>5.0.0</esb.version>
         <emma.version>2.1.5320</emma.version>
-        <carbon.integration.framework>4.0.0</carbon.integration.framework>
         <org.testng.version>6.1.1</org.testng.version>
         <integration.base.version>1.0.1</integration.base.version>
     </properties>
@@ -68,18 +67,6 @@
                     <artifactId>servlet-api</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.wso2.carbon</groupId>
-            <artifactId>org.wso2.carbon.integration.framework</artifactId>
-            <version>${carbon.integration.framework}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.wso2.carbon.automation</groupId>
