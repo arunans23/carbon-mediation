@@ -447,7 +447,7 @@ public class CacheMediator extends AbstractMediator implements ManagedLifecycle,
 
                 String contentType = ((String) msgCtx.getProperty(Constants.Configuration.CONTENT_TYPE));
                 if (contentType != null) {
-                    contentType = contentType.split(";")[0];
+                    contentType = contentType.split(CachingConstants.PROPERTY_SEPARATOR)[0];
                 }
 
                 if (contentType != null && contentType.equals(jsonContentType)) {
