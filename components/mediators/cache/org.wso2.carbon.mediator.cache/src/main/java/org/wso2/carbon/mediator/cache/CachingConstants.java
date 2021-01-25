@@ -116,5 +116,5 @@ public class CachingConstants {
     public static final String NO_CACHE_STRING = "no-cache";
     public static final String MAX_AGE_STRING = "max-age";
     public static final String NO_STORE_STRING = "no-store";
-
+    public static final String PROPERTY_SEPARATOR = ";";
 }
