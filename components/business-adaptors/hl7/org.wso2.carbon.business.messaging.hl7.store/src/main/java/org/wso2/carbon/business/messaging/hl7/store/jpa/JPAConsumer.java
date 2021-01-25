@@ -26,6 +26,11 @@ public class JPAConsumer implements MessageConsumer {
     }
 
     @Override
+    public void setAlive(boolean b) {
+
+    }
+
+    @Override
     public void setId(int i) {
 
     }
