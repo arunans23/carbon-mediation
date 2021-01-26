@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8" standalone="no"?><!--
  ~ Copyright (c) 2009-2010, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  ~
  ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +16,10 @@
     <parent>
         <groupId>org.wso2.carbon.mediation</groupId>
         <artifactId>mediation-initializer</artifactId>
-        <version>4.6.89</version>
+        <version>4.6.89.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <version>4.6.89</version>
+    <version>4.6.89.1-SNAPSHOT</version>
     <artifactId>org.wso2.carbon.mediation.dependency.mgt</artifactId>
     <packaging>bundle</packaging>
     <name>WSO2 Carbon - Mediation Dependency Management</name>
