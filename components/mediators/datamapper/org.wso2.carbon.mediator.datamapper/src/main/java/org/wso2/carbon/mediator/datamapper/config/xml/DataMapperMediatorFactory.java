@@ -93,17 +93,25 @@ public class DataMapperMediatorFactory extends AbstractMediatorFactory {
             handleException("The attribute config is required for the DataMapper mediator");
         }
 
+        if (targetAttribute != null) {
+            datamapperMediator.setTarget(targetAttribute.getAttributeValue());
+        }
+
+        if (targetVariableAttribute != null) {
+            datamapperMediator.setTargetVariableName(targetVariableAttribute.getAttributeValue());
+        }
+
         if (inputSchemaKeyAttribute != null) {
             Value inputSchemaKeyValue = keyFac.createValue(inputSchemaKeyAttribute.getLocalName(), element);
             datamapperMediator.setInputSchemaKey(inputSchemaKeyValue);
-        } else {
+        } else if (targetAttribute == null && targetVariableAttribute == null) {
             handleException("The attribute inputSchema is required for the DataMapper mediator");
         }
 
         if (outputSchemaKeyAttribute != null) {
             Value outputSchemaKeyValue = keyFac.createValue(outputSchemaKeyAttribute.getLocalName(), element);
             datamapperMediator.setOutputSchemaKey(outputSchemaKeyValue);
-        } else {
+        } else if (targetAttribute == null && targetVariableAttribute == null) {
             handleException("The outputSchema attribute is required for the DataMapper mediator");
         }
 
@@ -119,14 +127,6 @@ public class DataMapperMediatorFactory extends AbstractMediatorFactory {
             Value xsltStyleSheetKeyValue = keyFac.createValue(xsltStyleSheetKeyAttribute
                     .getLocalName(), element);
             datamapperMediator.setXsltStyleSheetKey(xsltStyleSheetKeyValue);
-        }
-
-        if (targetAttribute != null) {
-            datamapperMediator.setTarget(targetAttribute.getAttributeValue());
-        }
-
-        if (targetVariableAttribute != null) {
-            datamapperMediator.setTargetVariableName(targetVariableAttribute.getAttributeValue());
         }
 
         processAuditStatus(datamapperMediator, element);

@@ -78,6 +78,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.wso2.carbon.mediator.datamapper.config.xml.DataMapperMediatorConstants.AXIS2_CLIENT_CONTEXT;
 import static org.wso2.carbon.mediator.datamapper.config.xml.DataMapperMediatorConstants.AXIS2_CONTEXT;
@@ -327,7 +329,7 @@ public class DataMapperMediator extends AbstractMediator implements ManagedLifec
             }
         }
 
-        if (mappingResource == null && xsltMappingResource == null) {
+        if (mappingResource == null && xsltMappingResource == null && target == null) {
             checkForXSLTTransformation(synCtx);
             if (mappingResource == null && !usingXSLTMapping) {
                 String configKey = mappingConfigurationKey.evaluateValue(synCtx);
@@ -351,8 +353,7 @@ public class DataMapperMediator extends AbstractMediator implements ManagedLifec
         if (target != null || targetVariableName != null) {
             // new datamapping behaviour without schema validation is decided based on above attributes
             try {
-                String input = getInput(synCtx, inputType);
-                String output = transform(synCtx, mappingConfigurationKey.evaluateValue(synCtx), input);
+                String output = transform(synCtx, mappingConfigurationKey.evaluateValue(synCtx));
 
                 if (DataMapperMediatorConstants.TARGET_BODY.equalsIgnoreCase(target)) {
                     setOutput(synCtx, outputType, output);
@@ -426,13 +427,20 @@ public class DataMapperMediator extends AbstractMediator implements ManagedLifec
         }
     }
 
-    public String transform(MessageContext synCtx, String configKey, String inputJson) throws IOException {
+    public String transform(MessageContext synCtx, String configKey) throws IOException {
 
         if (scriptRunner == null) {
             String jsCode = getScriptResource(synCtx, configKey);
+            String inputType = extractInputType(jsCode);
+            String outputType = extractOutputType(jsCode);
+            if (inputType == null || outputType == null) {
+                handleException("Invalid input/output type found in DataMapper mapping configuration", synCtx);
+            }
             scriptRunner = new ScriptRunner(jsCode);
+            this.inputType = inputType.toUpperCase();
+            this.outputType = outputType.toUpperCase();
         }
-        return scriptRunner.runScript(inputJson, convertVariablesMapToJSON(synCtx));
+        return scriptRunner.runScript(getInput(synCtx, this.inputType), convertVariablesMapToJSON(synCtx));
     }
 
     /**
@@ -745,6 +753,9 @@ public class DataMapperMediator extends AbstractMediator implements ManagedLifec
 
     private String getScriptResource(MessageContext synCtx, String configKey) throws IOException {
 
+        if (configKey == null) {
+            handleException("DataMapper mediator : mapping configuration is null", synCtx);
+        }
         InputStream configFileInputStream = getRegistryResource(synCtx, configKey);
         if (configFileInputStream == null) {
             handleException("DataMapper mediator : mapping configuration is null", synCtx);
@@ -940,5 +951,17 @@ public class DataMapperMediator extends AbstractMediator implements ManagedLifec
                 throw new SynapseException("Output type is not defined in the output schema/synapse configuration");
             }
         }
+    }
+
+    private static String extractInputType(String jsContent) {
+        Pattern inputPattern = Pattern.compile("\\*\\s*inputType\\s*:\\s*(\\S+)");
+        Matcher matcher = inputPattern.matcher(jsContent);
+        return matcher.find() ? matcher.group(1) : null;
+    }
+
+    private static String extractOutputType(String jsContent) {
+        Pattern outputPattern = Pattern.compile("\\*\\s*outputType\\s*:\\s*(\\S+)");
+        Matcher matcher = outputPattern.matcher(jsContent);
+        return matcher.find() ? matcher.group(1) : null;
     }
 }

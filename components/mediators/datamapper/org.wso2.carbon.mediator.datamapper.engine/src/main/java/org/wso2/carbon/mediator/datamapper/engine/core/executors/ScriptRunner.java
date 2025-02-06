@@ -43,7 +43,8 @@ public class ScriptRunner {
         Value input = context.eval("js", "(" + inputJson + ")");
         Value variables = context.eval("js", "(" + variablesJson + ")");
         Value result = mapFunction.execute(input, variables);
-        return result.toString();
+        Value jsonString = context.eval("js", "JSON.stringify").execute(result);
+        return jsonString.toString();
     }
 
     public void close() {
